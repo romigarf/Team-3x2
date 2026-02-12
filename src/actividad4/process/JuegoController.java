@@ -54,4 +54,9 @@ public class JuegoController {
     public boolean estaTerminado() {
         return juegoTerminado;
     }
+
+
+    public int[][] obtenerLineaGanadora() {
+        return tablero.getLineaGanadora();
+    }
 }

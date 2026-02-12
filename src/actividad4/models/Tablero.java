@@ -2,6 +2,7 @@ package actividad4.models;
 
 public class Tablero {
     private String[][] tablero = new String[3][3];
+    private int[][] lineaGanadora = new int[3][2];
 
     public Tablero() {
         reiniciar();
@@ -32,6 +33,7 @@ public class Tablero {
             if (!tablero[i][0].equals("") &&
                     tablero[i][0].equals(tablero[i][1]) &&
                     tablero[i][1].equals(tablero[i][2])) {
+                lineaGanadora = new int[][]{{i,0}, {i,1}, {i,2}};
                 return tablero[i][0];
             }
         }
@@ -40,6 +42,7 @@ public class Tablero {
             if (!tablero[0][i].equals("") &&
                     tablero[0][i].equals(tablero[1][i]) &&
                     tablero[1][i].equals(tablero[2][i])) {
+                lineaGanadora = new int[][]{{0,i}, {1,i}, {2,i}};
                 return tablero[0][i];
             }
         }
@@ -47,16 +50,21 @@ public class Tablero {
         if (!tablero[0][0].equals("") &&
                 tablero[0][0].equals(tablero[1][1]) &&
                 tablero[1][1].equals(tablero[2][2])) {
+            lineaGanadora = new int[][]{{0,0}, {1,1}, {2,2}};
             return tablero[0][0];
         }
 
         if (!tablero[0][2].equals("") &&
                 tablero[0][2].equals(tablero[1][1]) &&
                 tablero[1][1].equals(tablero[2][0])) {
+            lineaGanadora = new int[][]{{0,2}, {1,1}, {2,0}};
             return tablero[0][2];
         }
 
         return null;
+    }
+    public int[][] getLineaGanadora() {
+        return lineaGanadora;
     }
 
     public boolean hayEmpate() {

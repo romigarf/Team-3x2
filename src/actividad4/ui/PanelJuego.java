@@ -32,20 +32,32 @@ public class PanelJuego extends JPanel {
                 int columna = j;
 
                 boton.addActionListener(e -> {
-
                     if (!boton.getText().equals("")) return;
+                    if (controller.estaTerminado()) return;
 
                     boton.setText(controller.getMarcaActual());
-
                     String mensaje = controller.jugar(fila, columna);
 
                     if (mensaje != null) {
                         label.setText(mensaje);
+
+                        if (mensaje.startsWith("Ganador")) {
+                            resaltarGanador(controller.obtenerLineaGanadora());
+                        }
                     }
                 });
-
                 botones[i][j] = boton;
                 add(boton);
+            }
+        }
+    }
+    private void resaltarGanador(int[][] coordenadas) {
+        if (coordenadas != null) {
+            for (int[] pos : coordenadas) {
+                int f = pos[0];
+                int c = pos[1];
+                botones[f][c].setBackground(Color.PINK);
+                botones[f][c].setForeground(Color.BLACK);
             }
         }
     }
