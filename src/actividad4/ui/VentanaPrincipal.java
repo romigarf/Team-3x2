@@ -1,44 +1,32 @@
 package actividad4.ui;
-import javax.swing.JFrame;
+import actividad4.process.JuegoController;
 import javax.swing.*;
 import java.awt.*;
 
-public class VentanaPrincipal{
-    JFrame frame = new JFrame("Tic Tac Toe");
-    JLabel textlabel = new JLabel();
-    JPanel textpanel= new JPanel();
-    JPanel boardpanel = new JPanel();
+public class VentanaPrincipal extends JFrame {
 
-    public VentanaPrincipal(){
-        frame.setTitle("Tic Tac Toe");
-        frame.setSize(500,500);
-        frame.setResizable(false);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());
-        frame.setLocationRelativeTo(null);
+    public VentanaPrincipal() {
 
-        textlabel.setBackground(Color.black);
-        textlabel.setForeground(Color.white);
-        textlabel.setFont(new Font("Arial", Font.BOLD, 50 ));
-        textlabel.setHorizontalAlignment(JLabel.CENTER);
-        textlabel.setText("Tic Tac Toe");
-        textpanel.setPreferredSize(new Dimension(500, 100));
-        textlabel.setOpaque(true);
-        textpanel.setLayout(new BorderLayout());
-        textpanel.add(textlabel);
-        frame.add(textpanel, BorderLayout.NORTH);
-        frame.setVisible(true);
+        setTitle("Tic Tac Toe");
+        setSize(600,650);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+        setResizable(false);
 
-        boardpanel.setLayout(new GridLayout(3,3));
-        boardpanel.setBackground(Color.black);
-        frame.add(boardpanel);
+        JLabel label = new JLabel("Turno de Jugador 1");
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setFont(new Font("Arial", Font.BOLD, 40));
+        label.setOpaque(true);
+        label.setBackground(Color.black);
+        label.setForeground(Color.white);
 
-        Tablero tablero = new Tablero();
+        JuegoController controller = new JuegoController();
+        PanelJuego panelJuego = new PanelJuego(controller, label);
 
-        frame.add(tablero.getBoardPanel(), BorderLayout.CENTER);
+        add(label, BorderLayout.NORTH);
+        add(panelJuego, BorderLayout.CENTER);
 
-        frame.setVisible(true);
+        setVisible(true);
     }
-
 }
