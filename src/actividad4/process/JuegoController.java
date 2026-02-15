@@ -4,6 +4,12 @@ import actividad4.ui.Language;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Clase controladora que gestiona la lógica central del juego Tic-Tac-Toe.
+ * Actúa como intermediario entre la interfaz de usuario (UI) y los modelos de datos.
+ * Se encarga del flujo de turnos, la lógica de la CPU y la verificación de victoria.
+ */
+
 public class JuegoController {
     private Tablero tablero;
     private Jugador jugador1;
