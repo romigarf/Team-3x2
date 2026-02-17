@@ -1,19 +1,23 @@
 package actividad4.ui;
+
 import actividad4.process.JuegoController;
 import javax.swing.*;
 import java.awt.*;
-
+/**
+ * Panel gráfico que muestra el tablero 3x3 del juego Tres en Raya y maneja las interacciones del usuario.
+ */
 public class PanelJuego extends JPanel {
 
     private JButton[][] botones = new JButton[3][3];
     private JuegoController controller;
     private JLabel label;
+    private Language idioma;
 
-    public PanelJuego(JuegoController controller, JLabel label) {
+    public PanelJuego(JuegoController controller, JLabel label, Language idioma) {
         this.controller = controller;
         this.label = label;
-
-        setLayout(new GridLayout(3,3));
+        this.idioma = idioma;
+        setLayout(new GridLayout(3, 3));
         setBackground(Color.BLACK);
 
         for (int i = 0; i < 3; i++) {
@@ -31,14 +35,10 @@ public class PanelJuego extends JPanel {
 
                 boton.addActionListener(e -> {
                     if (!boton.getText().equals("") || controller.estaTerminado()) return;
-
                     boton.setText(controller.getMarcaActual());
                     String mensaje = controller.jugar(fila, columna);
                     actualizarEstado(mensaje);
-
-                    if (controller.esModoContraCPU() && !controller.estaTerminado()) {
-                        realizarMovimientoCPU();
-                    }
+                    if (controller.esModoContraCPU() && !controller.estaTerminado()) realizarMovimientoCPU();
                 });
 
                 botones[i][j] = boton;
@@ -50,10 +50,8 @@ public class PanelJuego extends JPanel {
     private void realizarMovimientoCPU() {
         int[] coord = controller.obtenerMovimientoCPU();
         if (coord != null) {
-            int f = coord[0];
-            int c = coord[1];
-            botones[f][c].setText(controller.getMarcaActual());
-            String mensaje = controller.jugar(f, c);
+            botones[coord[0]][coord[1]].setText(controller.getMarcaActual());
+            String mensaje = controller.jugar(coord[0], coord[1]);
             actualizarEstado(mensaje);
         }
     }
@@ -61,21 +59,37 @@ public class PanelJuego extends JPanel {
     private void actualizarEstado(String mensaje) {
         if (mensaje != null) {
             label.setText(mensaje);
-
-            if (mensaje.startsWith(Language.get("WINNER"))) {
+            if (mensaje.startsWith(idioma.GANADOR)) {
                 resaltarGanador(controller.obtenerLineaGanadora());
+                mostrarDialogoReinicio();
             }
+            if (mensaje.equals(idioma.EMPATE)) mostrarDialogoReinicio();
         }
     }
 
     private void resaltarGanador(int[][] coordenadas) {
         if (coordenadas != null) {
             for (int[] pos : coordenadas) {
-                int f = pos[0];
-                int c = pos[1];
-                botones[f][c].setBackground(Color.GREEN);
-                botones[f][c].setForeground(Color.BLACK);
+                botones[pos[0]][pos[1]].setBackground(Color.GREEN);
+                botones[pos[0]][pos[1]].setForeground(Color.BLACK);
             }
+        }
+    }
+
+    private void mostrarDialogoReinicio() {
+        int respuesta = JOptionPane.showConfirmDialog(
+                this,
+                idioma.PREGUNTA_REINICIO,
+                idioma.REINICIAR,
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+            Window ventana = SwingUtilities.getWindowAncestor(this);
+            ventana.dispose();
+            new VentanaPrincipal(); // vuelve a inicio para elegir idioma y modo
+        } else {
+            System.exit(0);
         }
     }
 }
